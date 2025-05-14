@@ -1,0 +1,165 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+venv/
+ENV/
+
+# Custom Virtual Environment
+Virtual Enviornment/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# React Native / Expo
+.expo/
+dist/
+web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+*.tsbundle
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# Firebase
+firebase-debug.log
+.firebase/
+firebase-debug.*.log
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mobile App specific
+Mobile App/mobile/a0-project/node_modules/
+Mobile App/mobile/a0-project/.expo/
+Mobile App/mobile/a0-project/dist/
+Mobile App/mobile/a0-project/web-build/
+
+# Large data and model files
+Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/FER-2013/
+Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/*.h5
+Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/*.pt
+Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/*.pkl
+Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.csv
+Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.h5
+Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.pt
+Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.pkl
+
+# Large data files, datasets, and model artifacts
+Models/MODELS FOR FYP-1 TF==2.13/01-Audio/Datas/Pickle/
+Models/MODELS FOR FYP-1 TF==2.13/01-Audio/Dataset/
+Models/MODELS FOR FYP-1 TF==2.13/2-SentimentAnalysis/trainingprocessednoemoticon.csv
+Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/emotion_detection_model.h5
+
+# General patterns for large files / model artifacts
+*.h5
+*.hdf5
+*.pkl
+*.p
+*.model
+*.pb
+*.pt
+*.pth
+*.weights
+*.tflite
+*.onnx
+*.joblib
+*.ckpt
+*.index
+*.data-00000-of-00001
+
+# Archives (especially in Models or data directories)
+Models/**/*.zip
+Models/**/*.tar.gz
+Models/**/*.gz
+Models/**/*.rar
+Models/**/*.7z
+
+# Large CSVs if they are datasets (keep specific ones if needed for non-model code)
+Models/**/*.csv
+
+# Image datasets (if very large)
+Models/**/*.jpg
+Models/**/*.jpeg
+Models/**/*.png
+Models/**/*.bmp
+Models/**/*.gif
+Models/**/*.tiff
+
+# Files exceeding GitHub's size limits
+Models/MODELS FOR FYP-1 TF==2.13/01-Audio/Datas/Pickle/RAVDESS/DIS/[RAVDESS][MEL_SPECT][X_test].p
+Models/MODELS FOR FYP-1 TF==2.13/01-Audio/Datas/Pickle/RAVDESS/DIS/[RAVDESS][MEL_SPECT][X_train].p
+Models/MODELS FOR FYP-1 TF==2.13/01-Audio/Dataset/archive.zip
+
+# Keep essential code files
+!Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/*.py
+!Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/*.ipynb
+!Models/MODELS FOR FYP-1 TF==2.13/3-EmotionSentimentAnalysis/README.md
+!Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.py
+!Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.ipynb
+!Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/README.md
+!Models/README.md 
