@@ -162,4 +162,7 @@ Models/MODELS FOR FYP-1 TF==2.13/01-Audio/Dataset/archive.zip
 !Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.py
 !Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/*.ipynb
 !Models/MODELS FOR FYP-1 TF==2.13/4- Medicine Prescription System/README.md
-!Models/README.md 
+!Models/README.md
+
+# Jupyter Notebook Checkpoints
+**/.ipynb_checkpoints/ 
