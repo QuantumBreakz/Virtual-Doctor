@@ -1,0 +1,36 @@
+{
+  "header": {
+    "title": "Our Medical Technology Stack",
+    "subtitle": "Cutting-edge technologies powering our healthcare platform for optimal performance and reliability"
+  },
+  "techStacks": [
+    {
+      "title": "AI & Machine Learning",
+      "items": [
+        {
+          "title": "Diagnostic AI",
+          "description": "Advanced machine learning algorithms for accurate medical diagnosis and prediction with 95% accuracy rate."
+        },
+        {
+          "title": "Health Monitoring",
+          "description": "Real-time health data analysis and monitoring systems using state-of-the-art AI technology."
+        },
+        {
+          "title": "Natural Language Processing",
+          "description": "Advanced NLP for understanding and processing patient symptoms and medical queries."
+        }
+      ]
+    },
+    {
+      "title": "Security & Compliance",
+      "items": [
+        "HIPAA Compliance",
+        "End-to-end Encryption",
+        "Secure Data Storage",
+        "Regular Security Audits",
+        "Multi-factor Authentication",
+        "Privacy-first Architecture"
+      ]
+    }
+  ]
+}

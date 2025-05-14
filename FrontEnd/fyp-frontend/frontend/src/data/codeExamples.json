@@ -1,0 +1,10 @@
+[
+  {
+    "name": "healthCheck.ts",
+    "code": "interface HealthMetrics {\n  heartRate: number;\n  bloodPressure: {\n    systolic: number;\n    diastolic: number;\n  };\n  temperature: number;\n}\n\nfunction analyzeHealth(metrics: HealthMetrics): string {\n  // Health analysis logic\n  return 'Health status: Good';\n}"
+  },
+  {
+    "name": "diagnosis.ts",
+    "code": "interface Symptoms {\n  primary: string[];\n  secondary: string[];\n  duration: number;\n}\n\nasync function getDiagnosis(symptoms: Symptoms): Promise<string> {\n  // AI-powered diagnosis logic\n  return 'Preliminary diagnosis results';\n}"
+  }
+]

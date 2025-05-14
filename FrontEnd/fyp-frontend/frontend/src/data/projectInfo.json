@@ -1,0 +1,17 @@
+{
+  "overview": "Virtual Doctor is a comprehensive healthcare platform combining AI diagnostics with personalized patient care.",
+  "mission": "To make quality healthcare accessible to everyone, anywhere, anytime.",
+  "features": {
+    "ai_diagnostics": "Advanced AI-powered diagnostic system with 95% accuracy",
+    "telemedicine": "24/7 access to healthcare professionals",
+    "health_monitoring": "Real-time health tracking and alerts",
+    "medical_records": "Secure electronic health records management"
+  },
+  "statistics": {
+    "active_users": "50,000+",
+    "accuracy_rate": "95%",
+    "available_doctors": "100+",
+    "daily_consultations": "1,000+"
+  },
+  "compliance": "HIPAA compliant with end-to-end encryption"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "user": "Patient",
+    "message": "I've been experiencing frequent headaches and fatigue.",
+    "timestamp": "2024-03-10T10:30:00Z"
+  },
+  {
+    "user": "VirtualDoctor",
+    "message": "I understand your concerns. Let me ask you a few questions about your symptoms to provide a better assessment.",
+    "timestamp": "2024-03-10T10:30:15Z"
+  },
+  {
+    "user": "Patient",
+    "message": "The headaches usually occur in the afternoon.",
+    "timestamp": "2024-03-10T10:30:45Z"
+  },
+  {
+    "user": "VirtualDoctor",
+    "message": "Based on your symptoms, I recommend checking your screen time and ensuring proper hydration. Would you like me to schedule a consultation with a specialist?",
+    "timestamp": "2024-03-10T10:31:00Z"
+  }
+]
