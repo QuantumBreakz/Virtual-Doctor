@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
+        h1 { color: #333; }
+        .form-container { margin: 20px; }
+        textarea { width: 50%; height: 100px; }
+        .result { margin-top: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Sentiment Analysis</h1>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="text" placeholder="Type your text here...">{{ input_text }}</textarea><br><br>
+            <button type="submit">Analyze Sentiment</button>
+        </form>
+    </div>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if sentiment %}
+        <div class="result">
+            <h2>Results</h2>
+            <p><strong>Input Text:</strong> {{ input_text }}</p>
+            <p><strong>Predicted Sentiment:</strong> {{ sentiment }}</p>
+            <p><strong>Probabilities:</strong></p>
+            <ul>
+                {% for label, prob in probabilities.items %}
+                    <li>{{ label }}: {{ prob }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</body>
+</html>
