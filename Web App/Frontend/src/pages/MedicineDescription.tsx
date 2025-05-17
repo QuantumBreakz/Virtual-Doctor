@@ -29,10 +29,10 @@ const MedicineDescription = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [error, setError] = useState<string | null>(null);
   
-  // Local LLM configuration
+  
   const modelConfig = {
     endpoint: 'http://localhost:11434/api/generate',
-    model: 'llama3.2', // or other model you've pulled with Ollama
+    model: 'llama3.2',
     systemPrompt: `You are an AI medical assistant. Based on the symptoms provided, suggest a possible condition and recommend appropriate medications.
     
     Important:
@@ -81,7 +81,7 @@ const MedicineDescription = () => {
           stream: false,
         }),
       });
-      console.log("LLM response:", response);
+      console.log("Response:", response);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -92,7 +92,7 @@ const MedicineDescription = () => {
       // Find JSON in the response
       const jsonMatch = llmResponse.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
-        throw new Error("Failed to extract JSON from LLM response");
+        throw new Error("Failed to extract JSON ");
       }
 
       try {
@@ -101,10 +101,10 @@ const MedicineDescription = () => {
         return parsedResponse;
       } catch (parseError) {
         console.error("Failed to parse JSON:", parseError);
-        throw new Error("The LLM generated malformed JSON");
+        throw new Error("The malformed JSON");
       }
     } catch (error) {
-      console.error('Error fetching from local LLM:', error);
+      console.error('Error fetching :', error);
       throw error;
     }
   };

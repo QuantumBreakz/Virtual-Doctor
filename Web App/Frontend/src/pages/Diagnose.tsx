@@ -14,6 +14,13 @@ import {
   Heart
 } from 'lucide-react';
 
+// Define an interface for the diagnosis response
+interface DiagnosisResponse {
+  primaryAssessment: string;
+  confidenceLevel: number;
+  recommendedAction: string;
+}
+
 const Diagnose = () => {
   const [symptoms, setSymptoms] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -21,9 +28,16 @@ const Diagnose = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+  const [diagnosisResult, setDiagnosisResult] = useState<DiagnosisResponse>({
+    primaryAssessment: "Upper Respiratory Infection",
+    confidenceLevel: 92,
+    recommendedAction: "Schedule Telemedicine Consultation"
+  });
+  const [error, setError] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
+  // Rest of your existing code for commonSymptoms, toggleSymptom, startCamera, etc.
   const commonSymptoms = [
     'Headache',
     'Fever',
@@ -78,15 +92,91 @@ const Diagnose = () => {
     }
   };
 
+  // New function to get diagnosis from the llama model
+  const getAIDiagnosis = async (): Promise<DiagnosisResponse> => {
+    try {
+      // Prepare all symptoms for the prompt (selected symptoms + additional description)
+      const allSymptoms = [...selectedSymptoms];
+      if (symptoms.trim()) {
+        allSymptoms.push(symptoms);
+      }
+
+      // Convert captured image to base64 if available
+      const imageData = capturedImage ? capturedImage.split(',')[1] : null;
+
+      // Create the request to Ollama API
+      const response = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama3.2',
+          prompt: `You are an AI medical assistant. Based on the following symptoms, provide a diagnosis in JSON format.
+          
+          Patient symptoms: ${allSymptoms.join(', ')}
+          
+          Please respond ONLY with a JSON object in the following format:
+          {
+            "primaryAssessment": "Medical condition name",
+            "confidenceLevel": number between 1-100,
+            "recommendedAction": "Recommended next steps"
+          }
+          
+          Ensure your response contains ONLY valid JSON that can be parsed.`,
+          stream: false,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Extract the JSON response from the llama output
+      try {
+        // The response from Ollama contains a 'response' field with the model's output
+        const jsonMatch = data.response.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const jsonStr = jsonMatch[0];
+          return JSON.parse(jsonStr);
+        } else {
+          throw new Error('Could not extract JSON from response');
+        }
+      } catch (parseError) {
+        console.error('Failed to parse JSON response:', parseError);
+        // Fallback to default values if parsing fails
+        return {
+          primaryAssessment: "Could not determine",
+          confidenceLevel: 50,
+          recommendedAction: "Consult with a healthcare provider"
+        };
+      }
+    } catch (error) {
+      console.error('Error getting AI diagnosis:', error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsAnalyzing(true);
+    setError(null);
     
-    // Simulate analysis delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setSubmitted(true);
-    setIsAnalyzing(false);
+    try {
+      // Call the llama model to get diagnosis
+      const diagnosis = await getAIDiagnosis();
+      
+      // Update state with the diagnosis results
+      setDiagnosisResult(diagnosis);
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Error during diagnosis:', err);
+      setError("Failed to get diagnosis. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const vitalSigns = [
@@ -96,8 +186,11 @@ const Diagnose = () => {
     { icon: Brain, label: 'Neural Activity', value: 'Normal', status: 'normal' }
   ];
 
+  // Rest of your component...
+
   return (
     <div className="min-h-screen pt-24 px-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      {/* Your existing JSX... */}
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -105,6 +198,7 @@ const Diagnose = () => {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
         >
           <div className="p-8">
+            {/* Header section */}
             <div className="flex items-center gap-3 mb-8">
               <div className="p-3 bg-emerald-100 dark:bg-emerald-900 rounded-full">
                 <Stethoscope className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
@@ -120,7 +214,9 @@ const Diagnose = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Left column */}
               <div className="space-y-6">
+                {/* Common symptoms */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Common Symptoms
@@ -142,6 +238,7 @@ const Diagnose = () => {
                   </div>
                 </div>
 
+                {/* Symptom description textarea */}
                 <div>
                   <label htmlFor="symptoms" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Describe Additional Symptoms
@@ -156,6 +253,7 @@ const Diagnose = () => {
                   />
                 </div>
 
+                {/* Camera and upload buttons */}
                 <div className="flex gap-4">
                   <button
                     onClick={startCamera}
@@ -171,6 +269,7 @@ const Diagnose = () => {
                   </label>
                 </div>
 
+                {/* Camera view */}
                 <AnimatePresence>
                   {showCamera && (
                     <motion.div
@@ -203,6 +302,7 @@ const Diagnose = () => {
                   )}
                 </AnimatePresence>
 
+                {/* Captured image */}
                 {capturedImage && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -224,7 +324,9 @@ const Diagnose = () => {
                 )}
               </div>
 
+              {/* Right column */}
               <div className="space-y-6">
+                {/* Vital signs */}
                 <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     Current Vital Signs
@@ -252,6 +354,7 @@ const Diagnose = () => {
                   </div>
                 </div>
 
+                {/* Disclaimer */}
                 <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-xl">
                   <AlertCircle className="w-5 h-5 flex-shrink-0" />
                   <p className="text-sm">
@@ -259,6 +362,7 @@ const Diagnose = () => {
                   </p>
                 </div>
 
+                {/* Submit button */}
                 <button
                   onClick={handleSubmit}
                   disabled={isAnalyzing}
@@ -277,6 +381,7 @@ const Diagnose = () => {
                   )}
                 </button>
 
+                {/* Analysis results - Update to use diagnosisResult */}
                 {submitted && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -292,26 +397,32 @@ const Diagnose = () => {
                       </h3>
                     </div>
                     
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <p className="text-gray-700 dark:text-gray-300">
-                          Primary Assessment: Upper Respiratory Infection
-                        </p>
+                    {error ? (
+                      <div className="p-4 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg mb-4">
+                        {error}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-500" />
-                        <p className="text-gray-700 dark:text-gray-300">
-                          Confidence Level: 92%
-                        </p>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                          <p className="text-gray-700 dark:text-gray-300">
+                            Primary Assessment: {diagnosisResult.primaryAssessment}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-blue-500" />
+                          <p className="text-gray-700 dark:text-gray-300">
+                            Confidence Level: {diagnosisResult.confidenceLevel}%
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-purple-500" />
+                          <p className="text-gray-700 dark:text-gray-300">
+                            Recommended Action: {diagnosisResult.recommendedAction}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-purple-500" />
-                        <p className="text-gray-700 dark:text-gray-300">
-                          Recommended Action: Schedule Telemedicine Consultation
-                        </p>
-                      </div>
-                    </div>
+                    )}
 
                     <button className="mt-6 w-full flex items-center justify-center gap-2 bg-white dark:bg-gray-600 text-emerald-500 dark:text-emerald-400 py-3 rounded-lg border border-emerald-500 dark:border-emerald-400 hover:bg-emerald-50 dark:hover:bg-gray-500 transition-colors">
                       Schedule Consultation
